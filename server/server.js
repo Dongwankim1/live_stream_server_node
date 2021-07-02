@@ -6,6 +6,7 @@ middleware = require('connect-ensure-login'),
 FileStore = require('session-file-store')(Session),
 config = require('./config/default'),
 flash = require('connect-flash'),
+cors = require('cors'),
 port = 3333,
 node_media_server = require('./media/media_server');
 
@@ -16,7 +17,7 @@ app=express();
 
 mongoose.connect('mongodb://127.0.0.1/nodeStream',{useNewUrlParser:true});
 
-
+app.use(cors());
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'./views'));
 app.use(express.static('public'));
@@ -28,7 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/login',require('./routes/login'));
-
+app.use('/streams',require('./routes/streams'));
 
 app.use(Session({
     store:new FileStore({
