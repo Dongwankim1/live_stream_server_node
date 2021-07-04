@@ -1,6 +1,7 @@
 const config = {
     server: {
-        secret: 'kjVkuti2xAyF3JGCzSZTk0YWM5JhI9mgQW4rytXc'
+        secret: 'kjVkuti2xAyF3JGCzSZTk0YWM5JhI9mgQW4rytXc',
+        port : 3333
     },
     rtmp_server: {
         rtmp: {
@@ -12,7 +13,7 @@ const config = {
         },
         http: {
             port: 8888,
-            mediaroot: '../server/media',
+            mediaroot: './server/media',
             allow_origin: '*'
         },
         trans: {

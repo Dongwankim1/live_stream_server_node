@@ -11,7 +11,7 @@ let UserSchema = new Schema({
 });
 
 UserSchema.methods.generateHash = (password) =>{
-    return bycrypt.hashSync(password,bcrypt.genSaltSync(8),null);
+    return bycrypt.hashSync(password,bycrypt.genSaltSync(8),null);
 }
 
 UserSchema.methods.validPassword = function(password){

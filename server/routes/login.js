@@ -4,6 +4,7 @@ passport = require('passport');
 
 router.get('/',require('connect-ensure-login').ensureLoggedOut(),
 (req,res)=>{
+
     res.render('login',{
         user:null,
         errors:{

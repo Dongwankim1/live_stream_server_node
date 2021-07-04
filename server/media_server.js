@@ -1,8 +1,10 @@
 const NodeMediaServer = require('node-media-server'),
-    config = require('../config/default').rtmp_server;
- const User = require('../database/Schema').User;
-const nms = new NodeMediaServer(config);
- 
+    config = require('./config/default').rtmp_server;
+ const User = require('./database/Schema').User;
+nms = new NodeMediaServer(config),
+helpers = require('./helpers/helpers');
+
+
 nms.on('prePublish', async (id, StreamPath, args) => {
     let stream_key = getStreamKeyFromStreamPath(StreamPath);
     console.log('[NodeEvent on prePublish]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
@@ -13,7 +15,7 @@ nms.on('prePublish', async (id, StreamPath, args) => {
                 let session = nms.getSession(id);
                 session.reject();
             }else{
-                
+                helpers.generateStreamThumbnail(stream_key);
             }
         }
     })
@@ -24,5 +26,5 @@ const getStreamKeyFromStreamPath = (path) => {
     let parts = path.split('/');
     return parts[parts.length - 1];
 };
- 
+
 module.exports = nms;
