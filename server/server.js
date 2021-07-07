@@ -1,23 +1,22 @@
 const express = require('express'),
-Session = require('express-session'),
-bodyParse = require('body-parser'),
-mongoose = require('mongoose'),
-middleware = require('connect-ensure-login'),
-FileStore = require('session-file-store')(Session),
-config = require('./config/default'),
-flash = require('connect-flash'),
-cors = require('cors'),
-port = config.server.port,
-node_media_server = require('./media_server');
+    path = require('path'),
+    Session = require('express-session'),
+    bodyParse = require('body-parser'),
+    passport = require('./auth/passport'),
+    mongoose = require('mongoose'),
+    middleware = require('connect-ensure-login'),
+    FileStore = require('session-file-store')(Session),
+    config = require('./config/default'),
+    flash = require('connect-flash'),
+    port = config.server.port,
+    app = express(),
+    node_media_server = require('./media_server');
 
-const passport = require('./auth/passport');
-const path = require('path');
 
-app=express();
+mongoose.connect('mongodb://127.0.0.1/nodeStream',{useUnifiedTopology: true,
+useNewUrlParser:true});
 
-mongoose.connect('mongodb://127.0.0.1/nodeStream',{useNewUrlParser:true});
 
-app.use(cors());
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'./views'));
 app.use(express.static('public'));
@@ -27,6 +26,17 @@ app.use(require('cookie-parser')());
 app.use(bodyParse.urlencoded({extended:true}));
 app.use(bodyParse.json({extended:true}));
 
+/*
+ pm2 및 nodemon으로 돌릴경우
+ Fistore Session Json 파일이 수정 및 재생성 되므로
+ 서버가 재실행됨. 그러므로
+ 
+ package.json에 
+ ,"nodemonConfig": {
+        "ignore": ["./server/sessions"]
+    },
+을 삽입
+*/
 app.use(Session({
     store: new FileStore({
         path : 'server/sessions'
@@ -40,6 +50,7 @@ app.use(Session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 app.use('/login',require('./routes/login'));
 app.use('/register',require('./routes/register'));
 app.use('/settings', require('./routes/settings'));
@@ -48,13 +59,15 @@ app.use('/user', require('./routes/user'));
 
 
 app.get('/logout', (req, res) => {
+    console.log('loggggggout')
     req.logout();
+    console.log('logggggg11out')
     return res.redirect('/login');
 });
 
 
 app.get('*',middleware.ensureLoggedIn(),(req,res)=>{
-    console.log('asdasdqwd');
+    console.log('asdasd11');
     res.render('index');
 })
 

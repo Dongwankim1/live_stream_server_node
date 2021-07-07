@@ -5,8 +5,10 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "watch": "./node_modules/.bin/webpack --watch",
-        "start": "supervisor -w server ./server/server.js"
+        "watch": "webpack --watch",
+        "start": "nodemon ./server/server.js"
+    },"nodemonConfig": {
+        "ignore": ["./server/sessions"]
     },
     "author": "",
     "license": "ISC",
@@ -26,7 +28,7 @@
         "cron": "^1.7.0",
         "css-loader": "5.2.6",
         "ejs": "^2.6.1",
-        "express": "^4.16.4",
+        "express": "4.17.1",
         "express-session": "^1.15.6",
         "history": "^4.7.2",
         "jquery": "^3.4.1",
@@ -47,5 +49,8 @@
         "supervisor": "0.12.0",
         "video.js": "^7.4.1",
         "web-vitals": "2.1.0"
+    },
+    "devDependencies": {
+        "webpack-cli": "4.7.2"
     }
 }

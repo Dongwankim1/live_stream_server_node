@@ -11,10 +11,13 @@ let UserSchema = new Schema({
 });
 
 UserSchema.methods.generateHash = (password) =>{
+    console.log(password);
+    
     return bycrypt.hashSync(password,bycrypt.genSaltSync(8),null);
 }
 
 UserSchema.methods.validPassword = function(password){
+    console.log('aaa',bycrypt.compareSync(password,this.password))
     return bycrypt.compareSync(password,this.password);
 }
 
