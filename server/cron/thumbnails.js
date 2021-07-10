@@ -11,7 +11,8 @@ const job = new CronJob('*/5 * * * * *',function(){
         if(typeof (streams['live'] !== undefined)){
             let live_streams = streams['live']
             for (let stream in live_streams){
-                if(!live_streams.hasOwnProperty(streams)) continue;
+
+                if(!live_streams.hasOwnProperty(stream)) continue;
                 helpers.generateStreamThumbnail(stream);
             }
         }

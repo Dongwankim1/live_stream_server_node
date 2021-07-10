@@ -21,7 +21,7 @@ useNewUrlParser:true});
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'./views'));
 app.use(express.static('public'));
-
+app.use('/thumbnails', express.static('server/thumbnails'));
 app.use(require('cookie-parser')());
 
 /*

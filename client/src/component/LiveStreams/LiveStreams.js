@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-
+import './LiveStreams.scss';
 const LiveStreams = () =>{
 
     const [liveStreams,setLiveStreams] = useState([]);
@@ -16,17 +16,15 @@ const LiveStreams = () =>{
 
     }
 
-    const getStreamsInfo = () =>{
+    const getStreamsInfo = (live_streams) =>{
         axios.get('http://localhost:3333/streams/info',{
             params:{
-                streams:liveStreams
+                streams:live_streams
             }
         }).then(res =>{
-            setLiveStreams({
-                liveStreams:res.data
-            },()=>{
-                console.log(liveStreams)
-            })
+            setLiveStreams(
+                res.data
+            )
         })
     }
 
@@ -41,7 +39,7 @@ const LiveStreams = () =>{
                     <span className="live-label">LIVE</span>
                     <Link to={'/stream/' + stream.username}>
                         <div className="stream-thumbnail">
-                            <img src={'/thumbnails/' + stream.stream_key + '.png'}/>
+                            <img src={'http://localhost/thumbnails/' + stream.stream_key + '.png'}/>
                         </div>
                     </Link>
  
