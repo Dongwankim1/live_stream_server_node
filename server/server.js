@@ -10,7 +10,8 @@ const express = require('express'),
     flash = require('connect-flash'),
     port = config.server.port,
     app = express(),
-    node_media_server = require('./media_server');
+    node_media_server = require('./media_server'),
+    thumbnail_generator = require('./cron/thumbnails');
 
 
 mongoose.connect('mongodb://127.0.0.1/nodeStream',{useUnifiedTopology: true,
@@ -20,21 +21,18 @@ useNewUrlParser:true});
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'./views'));
 app.use(express.static('public'));
-app.use(flash());
 
 app.use(require('cookie-parser')());
-app.use(bodyParse.urlencoded({extended:true}));
-app.use(bodyParse.json({extended:true}));
 
 /*
- pm2 및 nodemon으로 돌릴경우
- Fistore Session Json 파일이 수정 및 재생성 되므로
- 서버가 재실행됨. 그러므로
- 
- package.json에 
- ,"nodemonConfig": {
-        "ignore": ["./server/sessions"]
-    },
+pm2 및 nodemon으로 돌릴경우
+Fistore Session Json 파일이 수정 및 재생성 되므로
+서버가 재실행됨. 그러므로
+
+package.json에 
+,"nodemonConfig": {
+    "ignore": ["./server/sessions"]
+},
 을 삽입
 */
 app.use(Session({
@@ -46,9 +44,12 @@ app.use(Session({
     resave : true,
     saveUninitialized : false,
 }));
+app.use(bodyParse.urlencoded({extended:true}));
+app.use(bodyParse.json({extended:true}));
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 
 app.use('/login',require('./routes/login'));
@@ -59,17 +60,15 @@ app.use('/user', require('./routes/user'));
 
 
 app.get('/logout', (req, res) => {
-    console.log('loggggggout')
     req.logout();
-    console.log('logggggg11out')
     return res.redirect('/login');
 });
 
 
 app.get('*',middleware.ensureLoggedIn(),(req,res)=>{
-    console.log('asdasd11');
     res.render('index');
 })
 
 app.listen(port,()=>console.log(`App listening on ${port}!`))
 node_media_server.run();
+thumbnail_generator.start();

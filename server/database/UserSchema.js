@@ -10,14 +10,11 @@ let UserSchema = new Schema({
     stream_key:String,
 });
 
-UserSchema.methods.generateHash = (password) =>{
-    console.log(password);
-    
+UserSchema.methods.generateHash = (password) =>{    
     return bycrypt.hashSync(password,bycrypt.genSaltSync(8),null);
 }
 
 UserSchema.methods.validPassword = function(password){
-    console.log('aaa',bycrypt.compareSync(password,this.password))
     return bycrypt.compareSync(password,this.password);
 }
 

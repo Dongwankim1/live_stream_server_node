@@ -1,23 +1,24 @@
 const express = require('express'),
-router = express.Router(),
-passport = require('passport');
+    router = express.Router(),
+    passport = require('passport');
 
-router.get('/',require('connect-ensure-login').ensureLoggedOut(),
-(req,res)=>{
-    console.log('asdasd');
-    res.render('login',{
-        user:null,
-        errors:{
-            email:req.flash('email'),
-            password:req.flash('password')
-        }
-    })
-})
+router.get('/',
+    require('connect-ensure-login').ensureLoggedOut(),
+    (req, res) => {
+        console.log('aasdasd11ddd');
+        res.render('login', {
+            user : null,
+            errors : {
+                email : req.flash('email'),
+                password : req.flash('password')
+            }
+        });
+    });
 
-router.post('/',passport.authenticate('localLogin',{
-    successRedirect:'/',
-    failureRedirect:'/login',
-    failureFlash:true
-}))
+router.post('/', passport.authenticate('localLogin', {
+    successRedirect : '/',
+    failureRedirect : '/login',
+    failureFlash : true
+}));
 
-module.exports=router;
+module.exports = router;
