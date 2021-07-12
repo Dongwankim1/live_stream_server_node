@@ -25,6 +25,7 @@ const LiveStreams = () =>{
             setLiveStreams(
                 res.data
             )
+            console.log(liveStreams);
         })
     }
 

@@ -7,8 +7,11 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "watch": "webpack --watch",
         "start": "nodemon ./server/server.js"
-    },"nodemonConfig": {
-        "ignore": ["./server/sessions"]
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "./server/sessions"
+        ]
     },
     "author": "",
     "license": "ISC",
@@ -47,7 +50,7 @@
         "session-file-store": "^1.2.0",
         "shortid": "^2.2.14",
         "supervisor": "0.12.0",
-        "video.js": "^7.4.1",
+        "video.js": "7.13.3",
         "web-vitals": "2.1.0"
     },
     "devDependencies": {
